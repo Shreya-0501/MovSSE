@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <video id="myVideo" width="800" height="500" controls>
+    <source src="vid.mp4" type="video/mp4">
+    <source src="mov_bbb.ogg" type="video/ogg">
+    Your browser does not support HTML5 video.
+    </video>
+
+    <p>Playback position: <span id="demo"></span></p>
+
+    <script>
+    // Get the video element with id="myVideo"
+    var vid = document.getElementById("myVideo");
+
+    // Assign an ontimeupdate event to the video element, and execute a function if the current playback position has changed
+    vid.ontimeupdate = function() {myFunction()};
+
+    function myFunction() {
+    // Display the current position of the video in a p element with id="demo"
+    document.getElementById("demo").innerHTML = vid.currentTime;
+    }
+    </script>
+
+    <p>Video courtesy of <a href="https://www.bigbuckbunny.org/" target="_blank">Toy story</a>.</p>
+
+    <form action="vp3.html" id="numform" oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+        <input type="range" id="a" name="a" value="50">
+        + <input type="number" id="b" name="b" value="0">
+
+        <div onclick="submit_form()">click me</div>
+    </form>
+
+    
+    <p>The second selected is : </p>
+    <output form="numform" id="x" name="x" for="a+b"></output>
+    <script>
+        document.getElementById("x").innerHTML = strText.value;
+        
+        function submit_form(){
+            //var form = document.getElementById("x");
+            
+            //alert("Your Message Sent "+form);
+            var tot = parseInt(a.value)+parseInt(b.value);
+            localStorage.setItem("myValue", tot);
+            window.location.href="vp4.html";
+        }
+    </script>
+
+
+    <script>
+        
+    </script>
+
+    
+<!--     
+
+    <script>
+        vid.currentTime = document.getElementById("x");
+    </script> -->
+    
+    
+</body>
+</html>
