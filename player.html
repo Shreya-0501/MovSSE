@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+table, th, td {
+  border: 1px ;
+}
+th, td {
+  padding: 15px;
+}
+th,td {
+   border: 2px solid midnightblue;
+   text-align: center;
+}
+            </style>
+            <script>
+                
+            </script>
+    </head>
+<body>
+    
+
+    <div class="row">
+        <div class="column">
+            <video id="myVideo" autoplay = "autoplay" width="800" height="500" controls>
+                <source src="salt_movie.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+                </video>
+            
+        </div>
+        <div class="column" style="padding:50px;">
+            <p>Playback position: <span id="demo"></span></p>
+            <p>Playback part number: <span id="sno"></span></p>
+            <form action="player.html" id="numform" oninput="x.value= parseInt(b.value)">
+                <input type="number" id="b" name="b" value="0">
+        
+                <span onclick="submit_form()"><button type="submit" form="form" value="Submit">Submit</button></span>
+            </form>
+          
+            <table style="padding:50px;">
+                <thead>
+                  <tr>
+                    <th>ACTOR & URL</th>
+                    <!-- Add more column headers as needed -->
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                  <!-- Data will be inserted here -->
+                </tbody>
+              </table>
+        </div>
+      </div>
+
+    
+   
+    <script>
+    //Vid variable
+    var vid = document.getElementById("myVideo");
+    const sample = {"1": {"start": 0, "end": 608, "Celebrities": ["Liev Schreiber  www.imdb.com/name/nm0000630", "August Diehl  www.imdb.com/name/nm0225944", "Angelina Jolie  www.imdb.com/name/nm0001401", "Gaius Charles  www.imdb.com/name/nm2173080", "Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Daniel Olbrychski  www.imdb.com/name/nm0646037"]}, "2": {"start": 608, "end": 1202, "Celebrities": ["Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Zoe Lister-Jones  www.imdb.com/name/nm1830380", "Liev Schreiber  www.imdb.com/name/nm0000630", "Angelina Jolie  www.imdb.com/name/nm0001401", "August Diehl  www.imdb.com/name/nm0225944", "Yara Shahidi  www.wikidata.org/wiki/Q453620"]}, "3": {"start": 1202, "end": 1933, "Celebrities": ["Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Zoe Lister-Jones  www.imdb.com/name/nm1830380", "Liev Schreiber  www.imdb.com/name/nm0000630", "Angelina Jolie  www.imdb.com/name/nm0001401", "August Diehl  www.imdb.com/name/nm0225944", "Yara Shahidi  www.wikidata.org/wiki/Q453620"]}, "4": {"start": 1933, "end": 2524, "Celebrities": ["Liev Schreiber  www.imdb.com/name/nm0000630", "Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Angelina Jolie  www.imdb.com/name/nm0001401", "August Diehl  www.imdb.com/name/nm0225944"]}, "5": {"start": 2524, "end": 3271, "Celebrities": ["Liev Schreiber  www.imdb.com/name/nm0000630", "Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Angelina Jolie  www.imdb.com/name/nm0001401", "August Diehl  www.imdb.com/name/nm0225944"]}, "6": {"start": 3271, "end": 4006, "Celebrities": ["Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "Liev Schreiber  www.imdb.com/name/nm0000630", "Angelina Jolie  www.imdb.com/name/nm0001401", "Daniel Olbrychski  www.imdb.com/name/nm0646037", "August Diehl  www.imdb.com/name/nm0225944"]}, "7": {"start": 4006, "end": 4640, "Celebrities": ["Corey Stoll  www.imdb.com/name/nm1015684", "Angelina Jolie  www.imdb.com/name/nm0001401", "Victoria Cartagena  www.wikidata.org/wiki/Q7926624", "Andre Braugher  www.wikidata.org/wiki/Q463397", "Jeremy Davidson  www.imdb.com/name/nm0203370", "Liev Schreiber  www.imdb.com/name/nm0000630", "Hunt Block  www.imdb.com/name/nm0088725"]}, "8": {"start": 4640, "end": 5363, "Celebrities": ["Jeremy Davidson  www.imdb.com/name/nm0203370", "Liev Schreiber  www.imdb.com/name/nm0000630", "Michelle Ray Smith  www.wikidata.org/wiki/Q3856880", "Angelina Jolie  www.imdb.com/name/nm0001401", "Andre Braugher  www.wikidata.org/wiki/Q463397", "Victor Slezak  www.imdb.com/name/nm0805789", "Hunt Block  www.imdb.com/name/nm0088725", "Chiwetel Ejiofor  www.imdb.com/name/nm0252230"]}, "9": {"start": 5363, "end": 5825, "Celebrities": ["Liev Schreiber  www.imdb.com/name/nm0000630", "Chiwetel Ejiofor  www.imdb.com/name/nm0252230", "John Cenatiempo  www.wikidata.org/wiki/Q24699898"]}}
+    
+    // console.log(sample)
+    // Assign an ontimeupdate event to the video element, and execute a function if the current playback position has changed
+    vid.ontimeupdate = function() {myFunction()};
+    
+    var before = 0
+
+    function myFunction() {
+        // Display the current position of the video in a p element with id="demo"
+        document.getElementById("demo").innerHTML = vid.currentTime;
+        
+        var i = 1;
+        var second=vid.currentTime;
+        var tableBody = document.getElementById('table-body');
+        
+        
+        
+        for(;i<10;i++)
+        {
+
+            if(second>=sample[i]["start"]&&second<sample[i]["end"])
+            {  
+                if(before!=i)
+                {
+                    tableBody.innerHTML = '';
+                    document.getElementById("sno").innerHTML = parseInt(i);
+                    // console.log(sample[i]["Celebrities"])
+
+                    for (var j = 0; j < sample[i]["Celebrities"].length; j++) {
+
+                        var row = document.createElement('tr');
+
+                        var cell1 = document.createElement('td');
+                        console.log(sample[i]["Celebrities"][j])
+                        cell1.textContent = sample[i]["Celebrities"][j];
+                        row.appendChild(cell1);
+
+                        tableBody.appendChild(row);
+                        }
+                    before = i;
+
+                }
+                
+                
+            }
+
+        
+        }
+
+    
+    }
+    
+    
+    </script>
+
+   
+
+   
+    <script>
+        document.getElementById("x").innerHTML = strText.value;
+        
+        function submit_form(){
+            //var form = document.getElementById("x");
+            
+            //alert("Your Message Sent "+form);
+            var tot = parseInt(b.value);
+            // alert("The Value Received is " + tot);
+            vid.currentTime = tot;
+            
+            
+        }
+    </script>
+
+
+</body>
+</html>
